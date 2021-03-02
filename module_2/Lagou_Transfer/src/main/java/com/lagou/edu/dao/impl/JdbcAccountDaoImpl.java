@@ -2,7 +2,7 @@ package com.lagou.edu.dao.impl;
 
 import com.lagou.edu.pojo.Account;
 import com.lagou.edu.dao.AccountDao;
-import com.lagou.edu.utils.ConnectionUtils;
+import com.lagou.edu.utils.DruidUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,11 +14,9 @@ import java.sql.ResultSet;
  */
 public class JdbcAccountDaoImpl implements AccountDao {
 
-    private ConnectionUtils connectionUtils = new ConnectionUtils();
-
     @Override
     public Account queryAccountByCardNo(String cardNo) throws Exception {
-        Connection con = connectionUtils.getCurrentThreadConn();
+        Connection con = DruidUtils.getInstance().getConnection();
         String sql = "select * from ACCOUNT where account_card_no = ?";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1,cardNo);
@@ -38,7 +36,7 @@ public class JdbcAccountDaoImpl implements AccountDao {
 
     @Override
     public int updateAccountByCardNo(Account account) throws Exception {
-        Connection con = connectionUtils.getCurrentThreadConn();
+        Connection con = DruidUtils.getInstance().getConnection();
         String sql = "update ACCOUNT set balance = ? where account_card_no = ?";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setInt(1,account.getBalance());
