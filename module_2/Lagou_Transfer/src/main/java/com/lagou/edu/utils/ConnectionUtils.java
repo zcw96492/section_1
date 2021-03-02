@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * @author 应癫
+ * @author zhouchaowei
  */
 public class ConnectionUtils {
 
@@ -15,9 +15,7 @@ public class ConnectionUtils {
      * 从当前线程获取连接
      */
     public Connection getCurrentThreadConn() throws SQLException {
-        /**
-         * 判断当前线程中是否已经绑定连接，如果没有绑定，需要从连接池获取一个连接绑定到当前线程
-          */
+        /** 判断当前线程中是否已经绑定连接，如果没有绑定，需要从连接池获取一个连接绑定到当前线程 */
         Connection connection = threadLocal.get();
         if(connection == null) {
             // 从连接池拿连接并绑定到线程

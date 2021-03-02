@@ -13,6 +13,13 @@ public class TransferServiceImpl implements TransferService {
 
     private AccountDao accountDao = (AccountDao) BeanFactory.getBean("accountDao");
 
+    /**
+     * 转账方法
+     * @param fromCardNo 来源卡号
+     * @param toCardNo 目标卡号
+     * @param money 转账金额
+     * @throws Exception
+     */
     @Override
     public void transfer(String fromCardNo, String toCardNo, int money) throws Exception {
             Account from = accountDao.queryAccountByCardNo(fromCardNo);

@@ -1,7 +1,8 @@
 package com.lagou.edu.pojo;
 
 /**
- * @author 应癫
+ * 响应体模型
+ * @author zhouchaowei
  */
 public class Result {
 
