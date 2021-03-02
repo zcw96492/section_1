@@ -6,6 +6,8 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -41,7 +43,33 @@ public class BeanFactory {
                 Object objectInstance = classObject.newInstance();
                 map.put(id,objectInstance);
             }
-        } catch (DocumentException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+
+            /** TODO 实例化完成之后维护对象的依赖关系,检查哪些对象需要传值进入;根据它的配置,我们传入相应的值 */
+            /** 3.有property子元素的Bean就是有传值需求的对象 */
+            List<Element> list = rootElement.selectNodes("//property");
+            for (int i = 0; i < list.size(); i++) {
+                Element element = list.get(i);
+                String name = element.attributeValue("name");
+                String ref = element.attributeValue("ref");
+
+                /** 3.1.找到当前被需要处理依赖关系的Bean(即当前property子元素的父元素) */
+                Element parentElement = element.getParent();
+                /** 3.2.调用父元素对象的反射功能 */
+                String parentElementId = parentElement.attributeValue("id");
+                /** 3.3.根据Id从map集合中拿到父元素对象 */
+                Object parentElementObject = map.get(parentElementId);
+                /** 3.4.遍历父对象中的所有方法,找到"set + name"方法 */
+                Method[] methods = parentElementObject.getClass().getMethods();
+                for (int j = 0; j < methods.length; j++) {
+                    Method method = methods[j];
+                    if(method.getName().equalsIgnoreCase("set" + name)){
+                        method.invoke(parentElementObject,map.get(ref));
+                    }
+                }
+                /** 3.5.把处理之后的parentElementObject重新放到map中 */
+                map.put(parentElementId,parentElementObject);
+            }
+        } catch (DocumentException | ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }

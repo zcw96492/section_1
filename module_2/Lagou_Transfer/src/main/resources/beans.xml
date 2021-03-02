@@ -3,5 +3,8 @@
 <beans>
     <!-- id标识对象,class是类的全限定类名 -->
     <bean id="accountDao" class="com.lagou.edu.dao.impl.JdbcAccountDaoImpl"></bean>
-    <bean id="transferService" class="com.lagou.edu.service.impl.TransferServiceImpl"></bean>
+    <bean id="transferService" class="com.lagou.edu.service.impl.TransferServiceImpl">
+        <!-- set + name 进行拼接之后,即锁定到传值的set方法,再通过反射技术,调用该方法 -->
+        <property name="AccountDao" ref="accountDao"></property>
+    </bean>
 </beans>

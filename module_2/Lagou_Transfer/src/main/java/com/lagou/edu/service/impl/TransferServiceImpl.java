@@ -1,6 +1,7 @@
 package com.lagou.edu.service.impl;
 
 import com.lagou.edu.dao.AccountDao;
+import com.lagou.edu.dao.impl.JdbcAccountDaoImpl;
 import com.lagou.edu.factory.BeanFactory;
 import com.lagou.edu.pojo.Account;
 import com.lagou.edu.service.TransferService;
@@ -11,7 +12,18 @@ import com.lagou.edu.service.TransferService;
  */
 public class TransferServiceImpl implements TransferService {
 
-    private AccountDao accountDao = (AccountDao) BeanFactory.getBean("accountDao");
+    /** 方式一:通过new对象的方式 */
+//    private AccountDao accountDao = new JdbcAccountDaoImpl();
+
+    /** 方式二:通过Bean工厂创建的方式替换new对象 */
+//    private AccountDao accountDao = (AccountDao) BeanFactory.getBean("accountDao");
+
+    /** 方式三:通过Bean对象的set方法 */
+    private AccountDao accountDao;
+
+    public void setAccountDao(AccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
 
     /**
      * 转账方法
