@@ -8,18 +8,8 @@ import java.sql.SQLException;
  */
 public class ConnectionUtils {
 
-    /*private ConnectionUtils() {
-
-    }
-
-    private static ConnectionUtils connectionUtils = new ConnectionUtils();
-
-    public static ConnectionUtils getInstance() {
-        return connectionUtils;
-    }*/
-
-
-    private ThreadLocal<Connection> threadLocal = new ThreadLocal<>(); // 存储当前线程的连接
+    /** 存储当前线程的连接 */
+    private ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 
     /**
      * 从当前线程获取连接
@@ -36,6 +26,5 @@ public class ConnectionUtils {
             threadLocal.set(connection);
         }
         return connection;
-
     }
 }

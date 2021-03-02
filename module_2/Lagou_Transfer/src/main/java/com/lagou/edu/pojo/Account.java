@@ -1,40 +1,46 @@
 package com.lagou.edu.pojo;
 
 /**
- * @author 应癫
+ * 账户表模型
+ * @author zhouchaowei
  */
 public class Account {
 
-    private String cardNo;
-    private String name;
-    private int money;
+    
+    private String accountCardNo;
+    private String userName;
+    private int balance;
 
-    public String getName() {
-        return name;
+    public String getAccountCardNo() {
+        return accountCardNo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccountCardNo(String accountCardNo) {
+        this.accountCardNo = accountCardNo;
     }
 
-    public int getMoney() {
-        return money;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getCardNo() { return cardNo; }
+    public int getBalance() {
+        return balance;
+    }
 
-    public void setCardNo(String cardNo) { this.cardNo = cardNo;}
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
     @Override
     public String toString() {
         return "Account{" +
-                "cardNo='" + cardNo + '\'' +
-                ", name='" + name + '\'' +
-                ", money=" + money +
+                "accountCardNo='" + accountCardNo + '\'' +
+                ", userName='" + userName + '\'' +
+                ", balance=" + balance +
                 '}';
     }
 }
