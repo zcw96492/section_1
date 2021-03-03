@@ -5,6 +5,8 @@ import com.lagou.edu.dao.impl.JdbcAccountDaoImpl;
 import com.lagou.edu.factory.BeanFactory;
 import com.lagou.edu.pojo.Account;
 import com.lagou.edu.service.TransferService;
+import com.lagou.edu.utils.ConnectionUtils;
+import com.lagou.edu.utils.TransactionManager;
 
 /**
  * 转账服务实现类
@@ -34,6 +36,9 @@ public class TransferServiceImpl implements TransferService {
      */
     @Override
     public void transfer(String fromCardNo, String toCardNo, int money) throws Exception {
+        try{
+            /** 在try块中开启事务(开启事务的本质是获取JDBC数据库连接) */
+            TransactionManager.getInstance().openTransaction();
             Account from = accountDao.queryAccountByCardNo(fromCardNo);
             Account to = accountDao.queryAccountByCardNo(toCardNo);
 
@@ -42,5 +47,13 @@ public class TransferServiceImpl implements TransferService {
 
             accountDao.updateAccountByCardNo(to);
             accountDao.updateAccountByCardNo(from);
+            TransactionManager.getInstance().commitTransaction();
+            /** 提交事务 */
+        }catch (Exception e){
+            e.printStackTrace();
+            /** 在异常中回滚事务 */
+            TransactionManager.getInstance().rollbackTransaction();
+            throw e;
+        }
     }
 }
