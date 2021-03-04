@@ -14,7 +14,8 @@ import java.util.*;
  * 生产对象的工厂类-使用反射技术生产对象
  * 任务一:读取解析xml，通过反射技术实例化对象并且存储待用（map集合）
  * 任务二:对外提供获取实例对象的接口（根据id获取）
- * @author zhouchaowei 
+ * @author zhouchaowei
+ * @since 2021.01.13
  */
 public class BeanFactory {
 

@@ -1,6 +1,7 @@
 package com.lagou.edu.servlet;
 
 import com.lagou.edu.factory.BeanFactory;
+import com.lagou.edu.factory.ProxyObjectFactory;
 import com.lagou.edu.utils.JsonUtils;
 import com.lagou.edu.pojo.Result;
 import com.lagou.edu.service.TransferService;
@@ -19,8 +20,14 @@ import java.io.IOException;
 @WebServlet(name="transferServlet",urlPatterns = "/transferServlet")
 public class TransferServlet extends HttpServlet {
 
-    private TransferService transferService = (TransferService) BeanFactory.getBean("transferService");
+//    private TransferService transferService = (TransferService) BeanFactory.getBean("transferService");
 
+    /** JDK动态代理-从工厂获取委托对象(委托对象是增强了事务控制的功能) */
+    private TransferService transferService = (TransferService) ProxyObjectFactory.getInstance().getJdkProxy(BeanFactory.getBean("transferService"));
+    
+    /** CgLib动态代理-从工厂获取委托对象(委托对象是增强了事务控制的功能) */
+//    private TransferService transferService = (TransferService) ProxyObjectFactory.getInstance().getCglibProxy(BeanFactory.getBean("transferService"));
+    
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req,resp);
