@@ -2,9 +2,24 @@
 <!-- 根标签beans,里面配置一个又一个的bean子标签,每一个bean子标签都代表一个类的配置 -->
 <beans>
     <!-- id标识对象,class是类的全限定类名 -->
-    <bean id="accountDao" class="com.lagou.edu.dao.impl.JdbcAccountDaoImpl"></bean>
+    <bean id="accountDao" class="com.lagou.edu.dao.impl.JdbcAccountDaoImpl">
+        <property name="ConnectionUtils" ref="connectionUtils"></property>
+    </bean>
     <bean id="transferService" class="com.lagou.edu.service.impl.TransferServiceImpl">
         <!-- set + name 进行拼接之后,即锁定到传值的set方法,再通过反射技术,调用该方法 -->
         <property name="AccountDao" ref="accountDao"></property>
+    </bean>
+    
+    <!-- 配置新增的三个Bean,并维护依赖关系 -->
+    <!-- JDBC连接工具类 -->
+    <bean id="connectionUtils" class="com.lagou.edu.utils.ConnectionUtils">
+    </bean>
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="com.lagou.edu.utils.TransactionManager">
+        <property name="ConnectionUtils" ref="connectionUtils"></property>
+    </bean>
+    <!-- 代理对象工厂 -->
+    <bean id="proxyObjectFactory" class="com.lagou.edu.factory.ProxyObjectFactory">
+        <property name="TransactionManager" ref="transactionManager"></property>
     </bean>
 </beans>

@@ -9,7 +9,13 @@ import java.sql.SQLException;
  */
 public class TransactionManager {
 
-    private static TransactionManager transactionManager = new TransactionManager();
+    private ConnectionUtils connectionUtils;
+
+    public void setConnectionUtils(ConnectionUtils connectionUtils) {
+        this.connectionUtils = connectionUtils;
+    }
+
+    /*private static TransactionManager transactionManager = new TransactionManager();
     
     private TransactionManager(){
         
@@ -17,26 +23,26 @@ public class TransactionManager {
 
     public static TransactionManager getInstance() {
         return transactionManager;
-    }
+    }*/
 
     /**
      * 开启事务
      */
     public void openTransaction() throws SQLException {
-        ConnectionUtils.getInstance().getConnectionFromCurrentThread().setAutoCommit(false);
+        connectionUtils.getConnectionFromCurrentThread().setAutoCommit(false);
     }
 
     /**
      * 提交事务
      */
     public void commitTransaction() throws SQLException {
-        ConnectionUtils.getInstance().getConnectionFromCurrentThread().commit();
+        connectionUtils.getConnectionFromCurrentThread().commit();
     }
 
     /**
      * 回滚事务
      */
     public void rollbackTransaction() throws SQLException {
-        ConnectionUtils.getInstance().getConnectionFromCurrentThread().rollback();
+        connectionUtils.getConnectionFromCurrentThread().rollback();
     }
 }

@@ -18,13 +18,13 @@ public class ConnectionUtils {
     /**
      * 以下代码用于保证Connection单例
      */
-    private static ConnectionUtils connectionUtils = new ConnectionUtils();
+    /*private static ConnectionUtils connectionUtils = new ConnectionUtils();
 
     private ConnectionUtils() { }
 
     public static ConnectionUtils getInstance(){
         return connectionUtils;
-    }
+    }*/
 
     /**
      * 从当前线程获取连接

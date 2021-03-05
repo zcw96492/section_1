@@ -15,12 +15,18 @@ import java.sql.ResultSet;
  */
 public class JdbcAccountDaoImpl implements AccountDao {
 
+    private ConnectionUtils connectionUtils;
+    
+    private void setConnectionUtils(ConnectionUtils connectionUtils){
+        this.connectionUtils = connectionUtils;
+    }
+    
     @Override
     public Account queryAccountByCardNo(String cardNo) throws Exception {
         /** 传统方式获取数据库连接 */
 //        Connection con = DruidUtils.getInstance().getConnection();
         /** 从当前线程中获取绑定的数据库连接(不能关闭该连接) */
-        Connection connection = ConnectionUtils.getInstance().getConnectionFromCurrentThread();
+        Connection connection = connectionUtils.getConnectionFromCurrentThread();
         String sql = "select * from ACCOUNT where account_card_no = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1,cardNo);
@@ -43,7 +49,7 @@ public class JdbcAccountDaoImpl implements AccountDao {
         /** 传统方式获取数据库连接 */
 //        Connection con = DruidUtils.getInstance().getConnection();
         /** 从当前线程中获取绑定的数据库连接(不能关闭该连接) */
-        Connection connection = ConnectionUtils.getInstance().getConnectionFromCurrentThread();
+        Connection connection = connectionUtils.getConnectionFromCurrentThread();
         String sql = "update ACCOUNT set balance = ? where account_card_no = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1,account.getBalance());

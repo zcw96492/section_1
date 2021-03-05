@@ -17,12 +17,19 @@ import java.lang.reflect.Proxy;
  */
 public class ProxyObjectFactory {
     
-    private static ProxyObjectFactory proxyFactory = new ProxyObjectFactory();
-    private ProxyObjectFactory(){ }
+    private TransactionManager transactionManager;
 
-    public static ProxyObjectFactory getInstance() {
-        return proxyFactory;
+    public void setTransactionManager(TransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
     }
+
+//    private static ProxyObjectFactory proxyFactory = new ProxyObjectFactory();
+//    
+//    private ProxyObjectFactory(){ }
+//
+//    public static ProxyObjectFactory getInstance() {
+//        return proxyFactory;
+//    }
 
     /**
      * 通过JDK动态代理来获取代理对象
@@ -38,14 +45,14 @@ public class ProxyObjectFactory {
                     Object result;
                     try{
                         /** 在try块中开启事务(开启事务的本质是获取JDBC数据库连接) */
-                        TransactionManager.getInstance().openTransaction();
+                        transactionManager.openTransaction();
                         result = method.invoke(object,args);
                         /** 提交事务 */
-                        TransactionManager.getInstance().commitTransaction();
+                        transactionManager.commitTransaction();
                     }catch (Exception e){
                         e.printStackTrace();
                         /** 在异常中回滚事务 */
-                        TransactionManager.getInstance().rollbackTransaction();
+                        transactionManager.rollbackTransaction();
                         throw e;
                     }
                     return result;
@@ -65,14 +72,14 @@ public class ProxyObjectFactory {
                 Object result = null;
                 try{
                     /** 在try块中开启事务(开启事务的本质是获取JDBC数据库连接) */
-                    TransactionManager.getInstance().openTransaction();
+                    transactionManager.openTransaction();
                     result = method.invoke(object,objects);
                     /** 提交事务 */
-                    TransactionManager.getInstance().commitTransaction();
+                    transactionManager.commitTransaction();
                 }catch (Exception e){
                     e.printStackTrace();
                     /** 在异常中回滚事务 */
-                    TransactionManager.getInstance().rollbackTransaction();
+                    transactionManager.rollbackTransaction();
                     throw e;
                 }
                 return result;
